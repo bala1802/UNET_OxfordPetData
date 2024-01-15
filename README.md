@@ -61,13 +61,51 @@ The U-Net architecture can be divided into two main parts: `Encoder` and `Decode
     - The `WHERE` part is resolved in the Expansion Path. The decoder takes the features learned in the contraction path and gradually upsamples them to match the original image's size. Skip connections, which connect corresponding layers in the encoder and decoder, provide "valuable information" about the location of features.
     - Example: In the Expansion Path, the model uses the information it learned earlier "Cat's ears", and places them in the right location on the image, so it knows `WHERE` those features are.
  
-    - #### Skip Connection
+#### Skip Connection
 
 To retain the spatial information from the Encoder and send it to the Decoder, the skip connection is used, which is nothing bu the bridge we can see between the `Encoder` and the `Decoder`. This bridge catties the spatial (width, height) information.
 
 #### Bottle Neck Layer
 
 The Layer which connects between the `Encoder` and the `Decoder`. Bottle Neck layer is applied at the end of the Encoder.
+
+#### Output Layer
+
+This is the Final Convolutional Layer, which is responsbile for converting the features from `64` to the output channels = 1. Because, the output will be `background in Black` and the `segmented object in white` color.
+
+### Weighted Loss
+
+Let's understand the `weighted loss` based on the statements mentioned in the paper.
+
+![Alt text](image-1.png)
+
+A technique used to train the U-Net model more effectively when dealing with the problem of segmenting objects that are very close to each other, like cells in a microscopy image.
+
+![Alt text](image-2.png)
+
+Suppose we have to use a model to seperate and identify each cell. From the above example, some of the cells are so close together that their boundaries touch, making it challenging for the model to distinguish between them accurately.
+
+When two cells touch, the boundary between them becomes ambiguous, and it's challenging for the model to predict the exact separation line correctly. This can lead to errors in segmentation.
+
+To address this challenge, the U-Net paper suggests using a `weighted loss` in the training process. In this case, the `weighted loss` function assigns different levels of importance or `weights` to different parts of the image.
+
+![Alt text](image-4.png)
+
+By using this weighted loss, the U-Net model pays special attention to the challenging areas where objects touch (boundary between two different objects), making it more likely to produce a better segmentation result in these complex cases.
+
+## Loss Functions in UNET
+
+Two different loss functions are used in the U-Net Image segmentation architecture
+
+- `Binary Cross-Entropy (BCE) Loss`: In Binary image segmentation, each pixel in the mask can be either a foreground(object) pixel or a background pixel. This loss function measures the dissimilarity between the predicted binary mask and the ground truth binary mask. This enables the model to produce pixel-wise probabilities that are close to the actual binary values (0 or 1).
+
+- `Dice Loss`: This loss function measures the overlap between the predicted and ground truth masks, focusing on the intersection of pixels. It enables the model to generate masks that closely match the ground truth.
+
+                Dice = (2 * Intersection) / (Sum of Pixels in Ground Truth + Sum of Pixels in Predicted)
+                Dice = (2 * 2) / (4 + 2) = 4 / 6 = 2/3 ≈ 0.67
+                Dice Loss = 1-0.67 = 0.33
+
+
 
 
 
