@@ -1,2 +1,58 @@
-# UNET_OxfordPetData
-Experimenting the UNET Architecture with various configurations on the Oxford Pet Dataset
+# UNET
+
+U-NET architecture implementation from scratch using PyTorch. 
+
+## Purpose:
+
+The purpose of this repository is to build and train a UNET model on the Oxford Pet Dataset (`torchvision.datasets.OxfordIIITPet`). The model training is done on 4 different combination of configurations. The prediction and loss values are captured for all the variants. This implementation is referenced to the paper `U-Net: Convolutional Networks for Biomedical Image Segmentation`
+
+## How to read this repository?
+
+```
+├── README.md
+├── UNET.ipynb
+├── config.py
+├── contracting_block.py
+├── data_loader.py
+├── download.py
+├── expanding_block.py
+├── loss.py
+├── oxford_dataset.py
+├── predictions.py
+├── train.py
+├── transform.py
+├── tree.txt
+└── unet.py
+```
+
+## About the Oxford Pet dataset
+
+About 37 category pet dataset with roughly 200 images for each class are available. The images have a large variations in scale, pose and lighting. All images have an associated ground truth annotation of breed, head ROI, and pixel level trimap segmentation. Pytorch Library: `torchvision.datasets.OxfordIIITPet`
+
+## Problem Statement:
+
+To develop a image segmentation module for the pet dataset.
+
+## UNET Architecture
+
+<img width="781" alt="image" src="https://github.com/bala1802/UNET_OxfordPetData/assets/22103095/5578afd6-9628-4b00-b91f-c3d5e7d5dc25">
+
+### UNET Architecture Explanation
+The U-Net architecture is an effective Neural Network architecture, used for Image Segmentation tasks like identifying and deliniating objects within images.
+
+#### Encoder - Decoder Structure
+The U-Net architecture can be divided into two main parts: `Encoder` and `Decoder` 
+
+#### Encoder
+- The Encoder is the top part of the `U` shape designed to capture features from the input image and gradually reduces the spatial dimension
+- It is a series of convolutional layers that work like a funnel, detecting simple features at the top and more complex features as we go deeper in the network. These layers reduces the spatial resolution (`width` and `height`), while increasing the number of channels.
+- The Encoder is a **Contraction Path**
+    - In the Contraction Path, the model learns `WHAT` features are present in the image. These features can be basic patterns, edges, textures or more complex structures
+    - However in this path, we lose some of the spatial information about `WHERE` in the image these features are located, since the spatial dimensions (`width` and `height`) of the feature maps are reduced as we move deeper into the Encoder.
+    - Example: When we look at the image of the cat, in the Encoder, the model learns `WHAT` features make up a cat, such as the shapes of ears, the fur texture, and the eyes. But it doesn't precisely know `WHERE` these features are in the original image becuase it has been reduced to lower-resolution feature maps.
+
+
+
+
+
+
