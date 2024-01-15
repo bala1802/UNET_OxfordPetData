@@ -73,27 +73,8 @@ The Layer which connects between the `Encoder` and the `Decoder`. Bottle Neck la
 
 This is the Final Convolutional Layer, which is responsbile for converting the features from `64` to the output channels = 1. Because, the output will be `background in Black` and the `segmented object in white` color.
 
-### Weighted Loss
 
-Let's understand the `weighted loss` based on the statements mentioned in the paper.
-
-![Alt text](image-1.png)
-
-A technique used to train the U-Net model more effectively when dealing with the problem of segmenting objects that are very close to each other, like cells in a microscopy image.
-
-![Alt text](image-2.png)
-
-Suppose we have to use a model to seperate and identify each cell. From the above example, some of the cells are so close together that their boundaries touch, making it challenging for the model to distinguish between them accurately.
-
-When two cells touch, the boundary between them becomes ambiguous, and it's challenging for the model to predict the exact separation line correctly. This can lead to errors in segmentation.
-
-To address this challenge, the U-Net paper suggests using a `weighted loss` in the training process. In this case, the `weighted loss` function assigns different levels of importance or `weights` to different parts of the image.
-
-![Alt text](image-4.png)
-
-By using this weighted loss, the U-Net model pays special attention to the challenging areas where objects touch (boundary between two different objects), making it more likely to produce a better segmentation result in these complex cases.
-
-## Loss Functions in UNET
+#### Loss Functions in UNET
 
 Two different loss functions are used in the U-Net Image segmentation architecture
 
